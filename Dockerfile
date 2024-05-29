@@ -1,5 +1,5 @@
 # qBittorrent, OpenVPN and WireGuard, qbittorrentvpn
-FROM debian:bullseye-slim
+FROM debian:sid-slim
 
 WORKDIR /opt
 
@@ -16,6 +16,7 @@ RUN apt update \
     ca-certificates \
     g++ \
     libxml2-utils \
+    ninja-build \
     && BOOST_VERSION_DOT=$(curl -sX GET "https://www.boost.org/feed/news.rss" | xmllint --xpath '//rss/channel/item/title/text()' - | awk -F 'Version' '{print $2 FS}' - | sed -e 's/Version//g;s/\ //g' | xargs | awk 'NR==1{print $1}' -) \
     && BOOST_VERSION=$(echo ${BOOST_VERSION_DOT} | head -n 1 | sed -e 's/\./_/g') \
     && curl -o /opt/boost_${BOOST_VERSION}.tar.gz -L https://boostorg.jfrog.io/artifactory/main/release/${BOOST_VERSION_DOT}/source/boost_${BOOST_VERSION}.tar.gz \
@@ -46,7 +47,7 @@ RUN apt update \
     jq \
     unzip \
     && NINJA_ASSETS=$(curl -sX GET "https://api.github.com/repos/ninja-build/ninja/releases" | jq '.[] | select(.prerelease==false) | .assets_url' | head -n 1 | tr -d '"') \
-    && NINJA_DOWNLOAD_URL=$(curl -sX GET ${NINJA_ASSETS} | jq '.[] | select(.name | match("ninja-linux";"i")) .browser_download_url' | tr -d '"') \
+    && NINJA_DOWNLOAD_URL=$(curl -sX GET ${NINJA_ASSETS} | jq '.[] | select(.name | match("ninja-linux.zip";"i")) .browser_download_url' | tr -d '"') \
     && curl -o /opt/ninja-linux.zip -L ${NINJA_DOWNLOAD_URL} \
     && unzip /opt/ninja-linux.zip -d /opt \
     && mv /opt/ninja /usr/local/bin/ninja \
@@ -135,6 +136,11 @@ RUN apt update \
     pkg-config \
     qtbase5-dev \
     qttools5-dev \
+    qtbase5-private-dev \
+    qt6-tools-dev \
+    qt6-tools-dev-tools \
+    libgcrypt20-dev \
+    qt6-l10n-tools \
     zlib1g-dev \
     && QBITTORRENT_RELEASE=$(curl -sX GET "https://api.github.com/repos/qBittorrent/qBittorrent/tags" | jq '.[] | select(.name | index ("alpha") | not) | select(.name | index ("beta") | not) | select(.name | index ("rc") | not) | .name' | head -n 1 | tr -d '"') \
     && curl -o /opt/qBittorrent-${QBITTORRENT_RELEASE}.tar.gz -L "https://github.com/qbittorrent/qBittorrent/archive/${QBITTORRENT_RELEASE}.tar.gz" \
@@ -156,6 +162,11 @@ RUN apt update \
     pkg-config \
     qtbase5-dev \
     qttools5-dev \
+    qtbase5-private-dev \
+    qt6-tools-dev \
+    qt6-tools-dev-tools \
+    libgcrypt20-dev \
+    qt6-l10n-tools \
     zlib1g-dev \
     && apt-get clean \
     && apt --purge autoremove -y \
@@ -178,7 +189,7 @@ RUN echo "deb http://deb.debian.org/debian/ unstable main" > /etc/apt/sources.li
     libqt5network5 \
     libqt5xml5 \
     libqt5sql5 \
-    libssl1.1 \
+    libssl-dev \
     moreutils \
     net-tools \
     openresolv \
