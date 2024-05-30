@@ -213,6 +213,7 @@ RUN echo "deb http://deb.debian.org/debian/ bullseye non-free" > /etc/apt/source
     p7zip-full \
     unzip \
     zip \
+    iproute2 \
     && apt-get clean \
     && apt --purge autoremove -y \
     && rm -rf \
