@@ -134,9 +134,8 @@ RUN apt update \
     jq \
     libssl-dev \
     pkg-config \
-    qtbase5-dev \
-    qttools5-dev \
-    qtbase5-private-dev \
+    qt6-base-dev \
+    qt6-base-private-dev \
     qt6-tools-dev \
     qt6-tools-dev-tools \
     libgcrypt20-dev \
@@ -160,9 +159,8 @@ RUN apt update \
     jq \
     libssl-dev \
     pkg-config \
-    qtbase5-dev \
-    qttools5-dev \
-    qtbase5-private-dev \
+    qt6-base-dev \
+    qt6-base-private-dev \
     qt6-tools-dev \
     qt6-tools-dev-tools \
     libgcrypt20-dev \
@@ -186,9 +184,9 @@ RUN echo "deb http://deb.debian.org/debian/ unstable main" > /etc/apt/sources.li
     ipcalc \
     iptables \
     kmod \
-    libqt5network5 \
-    libqt5xml5 \
-    libqt5sql5 \
+    libqt6network6 \
+    libqt6xml6 \
+    libqt6sql6 \
     libssl-dev \
     moreutils \
     net-tools \
